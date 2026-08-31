@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback &middot; The ENM Triangle</title>
+  <meta name="description" content="Send feedback about The ENM Triangle.">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="icon-512.png" sizes="512x512" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <header class="brand">
+      <span class="logo-mark" aria-hidden="true">
+        <span class="logo-mark__tri"></span>
+        <span class="logo-mark__dot"></span>
+      </span>
+      <h1>The ENM Triangle</h1>
+    </header>
+
+    <section aria-label="Feedback">
+      <p class="prompt">Found a bug, or have a thought? Let me know.</p>
+
+      <!-- Netlify Forms: detected at deploy time because the form markup is
+           in the static HTML. `form-name` must match the form's name, and
+           `netlify-honeypot` names the hidden anti-spam field below. -->
+      <form name="feedback" method="POST" data-netlify="true"
+            netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="feedback">
+
+        <p class="hp-field" aria-hidden="true">
+          <label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+        </p>
+
+        <label class="field">
+          <span>Name</span>
+          <input type="text" name="name" required>
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input type="email" name="email" required>
+        </label>
+
+        <label class="field">
+          <span>Feedback</span>
+          <textarea name="feedback" required></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </section>
+
+    <a class="back-link" href="index.html">&larr; Back to the quiz</a>
+  </main>
+
+  <footer class="site-footer">
+    <a href="about.html">About</a>
+    <a href="feedback.html">Feedback</a>
+    <a href="privacy.html">Privacy</a>
+  </footer>
+</body>
+</html>
