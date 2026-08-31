@@ -1,5 +1,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+button, input, select, textarea { font: inherit; }
+
 :root {
   --bg: #0f1115;
   --card: #1a1d24;
@@ -13,7 +15,7 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font: 400 16px/1.5 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,9 +39,17 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* ---- Titles: Jost, thin, all caps ---- */
+.brand h1,
+.zone-title {
+  font-family: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
 .brand h1 {
   font-size: 1.5rem;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.1em;
 }
 
 /* ---- Logo mark: CSS ENM triangle with a centre dot ---- */
@@ -327,9 +337,9 @@ body {
 .result { text-align: center; }
 
 .zone-title {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin-bottom: 0.4rem;
+  font-size: 1.55rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
 }
 
 .zone-desc {
