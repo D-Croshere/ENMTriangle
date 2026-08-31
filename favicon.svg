@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The ENM Triangle">
+  <title>The ENM Triangle</title>
+  <!-- Three colour regions, one per vertex: kink (red, top), poly (blue, lower-left), swinger (green, lower-right) -->
+  <path d="M32 7 L44.5 32 L32 40.33 L19.5 32 Z" fill="#dc2626"/>
+  <path d="M7 57 L19.5 32 L32 40.33 L32 57 Z" fill="#2563eb"/>
+  <path d="M57 57 L32 57 L32 40.33 L44.5 32 Z" fill="#16a34a"/>
+  <!-- Clean outer edge -->
+  <path d="M32 7 L57 57 L7 57 Z" fill="none" stroke="#0f1115" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Centre dot -->
+  <circle cx="32" cy="40.33" r="4.6" fill="#0f1115" stroke="#ffffff" stroke-width="2.4"/>
+</svg>
