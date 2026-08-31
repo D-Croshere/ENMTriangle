@@ -31,6 +31,9 @@ body {
 }
 
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
   margin-bottom: 1.5rem;
 }
 
@@ -39,67 +42,169 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* ---- Sliders ---- */
+/* ---- Logo mark: CSS ENM triangle with a centre dot ---- */
+.logo-mark {
+  position: relative;
+  width: 2.1rem;
+  height: 1.9rem;
+  flex: none;
+}
+
+.logo-mark__tri {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: conic-gradient(from 0deg at 50% 66%,
+    #dc2626, #16a34a 120deg, #2563eb 240deg, #dc2626 360deg);
+}
+
+.logo-mark__dot {
+  position: absolute;
+  left: 50%;
+  top: 66%;
+  width: 0.44rem;
+  height: 0.44rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* ---- Quiz ---- */
 .prompt {
   font-weight: 600;
   margin-bottom: 1.25rem;
 }
 
-.question {
-  margin-bottom: 1.75rem;
-}
-
-.question-label span:first-child {
-  text-transform: capitalize;
-}
-
-.question-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 0.6rem;
-  font-weight: 500;
-}
-
-.question-value {
-  font-variant-numeric: tabular-nums;
+.progress {
+  color: var(--muted);
+  font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent);
-  min-width: 2.5ch;
-  text-align: right;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
 }
 
-input[type="range"] {
+#question-text {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  min-height: 3.2em;
+}
+
+#likert {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.likert-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--track);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.likert-option:hover {
+  border-color: var(--accent);
+}
+
+.likert-option:has(input:checked) {
+  border-color: var(--accent);
+  background: rgba(224, 69, 123, 0.12);
+}
+
+.likert-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.likert-option input {
   -webkit-appearance: none;
   appearance: none;
-  width: 100%;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin: 0;
+  border: 2px solid #6b7280;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  transition: border-color 0.12s ease;
+}
+
+.likert-option input:hover {
+  border-color: #8b93a1;
+}
+
+.likert-option input::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #6b7280; /* grey center, unchecked */
+  transform: scale(0);
+  transition: transform 0.12s ease;
+}
+
+.likert-option input:checked {
+  border-color: var(--accent);
+}
+
+.likert-option input:checked::before {
+  background: #dc2626; /* red center, checked */
+}
+
+.likert-option input:checked::before {
+  transform: scale(1);
+}
+
+.validation {
+  color: var(--accent);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-top: 0.4rem;
+}
+
+.actions-row {
+  flex-direction: row;
+}
+
+.actions-row .btn {
+  flex: 1;
+}
+
+.actions-row #back {
+  flex: 0 0 30%;
+}
+
+.progress-bar {
   height: 6px;
   border-radius: 3px;
   background: var(--track);
-  outline-offset: 4px;
+  overflow: hidden;
+  margin-top: 1rem;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+.progress-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 3px;
   background: var(--accent);
-  cursor: pointer;
-  border: 3px solid var(--card);
-  box-shadow: 0 0 0 1px var(--accent);
+  transition: width 0.25s ease;
 }
 
-input[type="range"]::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--accent);
-  cursor: pointer;
-  border: 3px solid var(--card);
-  box-shadow: 0 0 0 1px var(--accent);
+.resume-prompt .resume-sub {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 /* ---- Buttons ---- */
@@ -128,6 +233,12 @@ input[type="range"]::-moz-range-thumb {
   border: 1px solid var(--track);
 }
 .btn-secondary:hover { background: var(--track); }
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn:disabled:hover { background: transparent; }
 
 .actions {
   display: flex;

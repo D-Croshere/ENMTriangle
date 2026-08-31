@@ -4,23 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The ENM Triangle</title>
+  <meta name="description" content="A 31-question self-assessment that plots where you land across poly, swinger, and kink.">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="icon-512.png" sizes="512x512" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <!-- Open Graph / Facebook / LinkedIn / Slack / Discord / iMessage -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The ENM Triangle">
+  <meta property="og:title" content="The ENM Triangle">
+  <meta property="og:description" content="A 31-question self-assessment that plots where you land across poly, swinger, and kink.">
+  <meta property="og:url" content="https://enmtriangle.netlify.app/">
+  <meta property="og:image" content="https://enmtriangle.netlify.app/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The ENM Triangle — a triangle shaded red, blue and green with a dot in the middle.">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The ENM Triangle">
+  <meta name="twitter:description" content="A 31-question self-assessment that plots where you land across poly, swinger, and kink.">
+  <meta name="twitter:image" content="https://enmtriangle.netlify.app/og-image.png">
+  <meta name="twitter:image:alt" content="The ENM Triangle — a triangle shaded red, blue and green with a dot in the middle.">
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="card">
     <header class="brand">
+      <span class="logo-mark" aria-hidden="true">
+        <span class="logo-mark__tri"></span>
+        <span class="logo-mark__dot"></span>
+      </span>
       <h1>The ENM Triangle</h1>
     </header>
 
-    <!-- Screen 1: Questions -->
-    <section id="screen-questions" aria-label="Rate yourself">
-      <form id="quiz-form">
-        <p class="prompt" id="prompt-text">How much do you consider yourself&hellip;</p>
-        <div id="questions"><!-- sliders injected by app.js --></div>
-        <button type="submit" class="btn btn-primary">See My Results</button>
+    <!-- Screen 1: Quiz -->
+    <section id="screen-questions" aria-label="Quiz">
+      <div id="resume-prompt" class="resume-prompt" hidden>
+        <p class="prompt">You have a quiz in progress.</p>
+        <p class="resume-sub" id="resume-sub"></p>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="resume-yes">Resume</button>
+          <button type="button" class="btn btn-secondary" id="resume-no">Start fresh</button>
+        </div>
+      </div>
+
+      <form id="quiz-form" hidden>
+        <p class="progress" id="progress" aria-live="polite"></p>
+        <p class="prompt" id="question-text"></p>
+        <div id="likert" role="radiogroup" aria-labelledby="question-text"><!-- options injected by app.js --></div>
+        <p class="validation" id="validation" aria-live="polite"></p>
+        <div class="actions actions-row">
+          <button type="button" class="btn btn-secondary" id="back">Back</button>
+          <button type="submit" class="btn btn-primary" id="next">Next</button>
+        </div>
+        <div class="progress-bar" aria-hidden="true">
+          <span class="progress-bar-fill" id="progress-fill"></span>
+        </div>
       </form>
 
-      <p class="sr-only" aria-live="polite" id="slider-announce"></p>
+      <p class="sr-only" aria-live="polite" id="quiz-announce"></p>
     </section>
 
     <!-- Screen 2: Triangle Chart -->
@@ -40,7 +87,7 @@
 
       <div class="actions">
         <button type="button" class="btn btn-primary" id="share">Copy Share Link</button>
-        <button type="button" class="btn btn-secondary" id="start-over">Start Over</button>
+        <button type="button" class="btn btn-secondary" id="start-over">Take the Quiz</button>
       </div>
       <p class="share-status" id="share-status" aria-live="polite"></p>
     </section>

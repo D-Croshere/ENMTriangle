@@ -1,6 +1,11 @@
 {
-  "_note": "Result copy for The ENM Triangle. Edit any title/description/shareLine freely. Keep the zone keys exactly as-is — app.js looks them up by key. `description` is shown on screen (second person). `shareLine` is what gets copied to the clipboard (first person). The three `edge_*` zones each match one exact point: a 50/50 split of two traits with the third at zero.",
+  "_note": "Result copy for The ENM Triangle. Edit any title/description/shareLine freely. Keep the zone keys exactly as-is — app.js looks them up by key. `description` is shown on screen (second person). `shareLine` is what gets copied to the clipboard (first person). The three `edge_*` zones each match a tolerance band near an edge midpoint: a roughly 50/50 split of two traits with the third near zero. `monogamous` is not a triangle zone — it's shown (with no dot plotted) when all three axis scores land near zero.",
   "zones": {
+    "monogamous": {
+      "title": "The Monogamist",
+      "description": "You're here for one person. One connection. No extra dynamics.",
+      "shareLine": "I'm here for one person. One connection. No extra dynamics."
+    },
     "adventurer": {
       "title": "The True Adventurer",
       "description": "You're here to explore and try a little of everything.",
