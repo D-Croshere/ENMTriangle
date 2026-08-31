@@ -70,6 +70,15 @@
       <p class="sr-only" aria-live="polite" id="quiz-announce"></p>
     </section>
 
+    <!-- Screen 1.5: Computing (no interactive elements — this is what closes
+         the double-tap-on-"See My Results" bug) -->
+    <section id="screen-computing" hidden aria-label="Calculating your result">
+      <p class="computing-text" role="status">Finding your spot on the triangle&hellip;</p>
+      <div class="computing-bar" aria-hidden="true">
+        <span class="computing-bar__mask" id="computing-mask"></span>
+      </div>
+    </section>
+
     <!-- Screen 2: Triangle Chart -->
     <section id="screen-results" hidden aria-label="Your spot on the triangle">
       <div class="chart-wrap">
@@ -87,9 +96,14 @@
 
       <div class="actions">
         <button type="button" class="btn btn-primary" id="share">Copy Share Link</button>
-        <button type="button" class="btn btn-secondary" id="start-over">Take the Quiz</button>
       </div>
       <p class="share-status" id="share-status" aria-live="polite"></p>
+
+      <hr class="divider">
+      <p class="retake-prompt">Want to find your ENM Triangle profile?</p>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="start-over">Take the Quiz</button>
+      </div>
     </section>
   </main>
 

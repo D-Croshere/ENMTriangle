@@ -30,8 +30,8 @@ const VERTEX_RADIUS = 66; // px, distance from a vertex for a "pure" zone
 // to each other. Tolerance is a fraction of the 0-1 weight range.
 const EDGE_TOLERANCE = 0.05;
 
-// Below this raw per-axis total (on the 0-4-based scale) on all three axes,
-// no dot is plotted — the "monogamous" result is shown instead.
+// Below this per-axis total (after clamping negatives to zero) on all three
+// axes, no dot is plotted — the "monogamous" result is shown instead.
 const MONOGAMOUS_THRESHOLD = 1;
 
 // Canonical home of The ENM Triangle — share links always point here.
@@ -97,7 +97,9 @@ function zoneCopy(key) {
 
 const els = {
   screenQ:      document.getElementById("screen-questions"),
+  screenC:      document.getElementById("screen-computing"),
   screenR:      document.getElementById("screen-results"),
+  computingMask: document.getElementById("computing-mask"),
   resumePrompt: document.getElementById("resume-prompt"),
   resumeSub:    document.getElementById("resume-sub"),
   resumeYes:    document.getElementById("resume-yes"),
@@ -228,12 +230,14 @@ function renderQuestion() {
   });
 
   els.back.disabled = quiz.index === 0;
+  els.next.disabled = false;
   els.next.textContent = quiz.index === total - 1 ? "See My Results" : "Next";
 }
 
 function showQuiz() {
   els.resumePrompt.hidden = true;
   els.form.hidden = false;
+  els.screenC.hidden = true;
   els.screenR.hidden = true;
   els.screenQ.hidden = false;
   renderQuestion();
@@ -283,10 +287,41 @@ els.back.addEventListener("click", () => {
   renderQuestion();
 });
 
+// Length of the non-interactive "computing" pause between the last question
+// and the results. A deliberate beat for feel — the math itself is instant.
+const COMPUTING_MS = 600;
+
 function finishQuiz() {
+  // Guard against a stray second click/Enter landing before the screen swaps.
+  els.next.disabled = true;
+  els.back.disabled = true;
+
   const totals = scoreQuiz(QUESTION_LIST, quiz.responses);
   clearProgress();
-  showResults(totals);
+
+  showComputing();
+  animateComputingBar(COMPUTING_MS);
+  setTimeout(() => showResults(totals), COMPUTING_MS);
+}
+
+function showComputing() {
+  els.screenQ.hidden = true;
+  els.screenR.hidden = true;
+  els.screenC.hidden = false;
+}
+
+// Fill 0% -> 100% over `duration` ms by shrinking the mask that covers the
+// fixed gradient bar.
+function animateComputingBar(duration) {
+  const start = performance.now();
+  els.computingMask.style.width = "100%";
+
+  function frame(now) {
+    const p = Math.min(1, (now - start) / duration);
+    els.computingMask.style.width = `${(1 - p) * 100}%`;
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
 
 /* ------------------------------------------------------------------ *
@@ -294,12 +329,18 @@ function finishQuiz() {
  * ------------------------------------------------------------------ */
 
 // responses: { q01: 4, q02: 2, ... } — Likert value (1-5) per question id.
+//
+// Each response maps to a signed multiplier on the question's weights:
+//   1 strongly disagree -> -1     3 neutral -> 0     5 strongly agree -> +1
+//   2 disagree          -> -0.5                      4 agree          -> +0.5
+// i.e. (response - 3) / 2. `reverse: true` flips the sign, so agreement
+// pulls the loaded axis down. Axis totals can therefore be negative.
 function scoreQuiz(questions, responses) {
   const totals = { poly: 0, swinger: 0, kinky: 0 };
 
   for (const q of questions) {
-    const raw = responses[q.id] - 1;              // rescale 1-5 to 0-4
-    const value = q.reverse ? (4 - raw) : raw;
+    let value = (responses[q.id] - 3) / 2;
+    if (q.reverse) value = -value;
     totals.poly    += q.weights.poly    * value;
     totals.swinger += q.weights.swinger * value;
     totals.kinky   += q.weights.kinky   * value;
@@ -309,16 +350,22 @@ function scoreQuiz(questions, responses) {
 }
 
 function getResult(totals) {
-  if (totals.poly    < MONOGAMOUS_THRESHOLD &&
-      totals.swinger < MONOGAMOUS_THRESHOLD &&
-      totals.kinky   < MONOGAMOUS_THRESHOLD) {
+  // A negative axis total means "actively not this" — for plotting that's the
+  // same as zero. Clamp before the monogamous check and normalisation.
+  const poly    = Math.max(0, totals.poly);
+  const swinger = Math.max(0, totals.swinger);
+  const kinky   = Math.max(0, totals.kinky);
+
+  if (poly    < MONOGAMOUS_THRESHOLD &&
+      swinger < MONOGAMOUS_THRESHOLD &&
+      kinky   < MONOGAMOUS_THRESHOLD) {
     return { type: "monogamous" };
   }
 
-  const sum = totals.poly + totals.swinger + totals.kinky;
-  const wPoly    = sum === 0 ? 1 / 3 : totals.poly    / sum;
-  const wSwinger = sum === 0 ? 1 / 3 : totals.swinger / sum;
-  const wKinky   = sum === 0 ? 1 / 3 : totals.kinky   / sum;
+  const sum = poly + swinger + kinky;
+  const wPoly    = sum === 0 ? 1 / 3 : poly    / sum;
+  const wSwinger = sum === 0 ? 1 / 3 : swinger / sum;
+  const wKinky   = sum === 0 ? 1 / 3 : kinky   / sum;
 
   const x = wKinky * KINKY.x + wPoly * POLY.x + wSwinger * SWINGER.x;
   const y = wKinky * KINKY.y + wPoly * POLY.y + wSwinger * SWINGER.y;
@@ -444,6 +491,7 @@ function showResults(totals) {
   els.shareStatus.textContent = "";
 
   els.screenQ.hidden = true;
+  els.screenC.hidden = true;
   els.screenR.hidden = false;
 }
 
