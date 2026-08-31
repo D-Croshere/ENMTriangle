@@ -3,68 +3,68 @@
   "zones": {
     "adventurer": {
       "title": "The True Adventurer",
-      "description": "Roughly equal parts poly, swinger, and kinky — you don't fit in one box.",
-      "shareLine": "I'm roughly equal parts poly, swinger, and kinky — I don't fit in one box."
+      "description": "You're here to explore and try a little of everything.",
+      "shareLine": "I'm here to explore and try a little of everything."
     },
     "pure_poly": {
-      "title": "The Purist — Poly",
-      "description": "Multiple loving relationships are the heart of it for you.",
-      "shareLine": "Multiple loving relationships are the heart of it for me."
+      "title": "The Polyamorist",
+      "description": "You're here for the amory. The connection. The love.",
+      "shareLine": "I'm here for the amory. The connection. The love."
     },
     "pure_swinger": {
-      "title": "The Purist — Swing",
-      "description": "Recreational, social play with your partner is your lane.",
-      "shareLine": "Recreational, social play with my partner is my lane."
+      "title": "The Swinger",
+      "description": "You're here to play! You want to have a good time tonight.",
+      "shareLine": "I'm here to play! I want to have a good time tonight."
     },
     "pure_kinky": {
-      "title": "The Purist — Kink",
-      "description": "Kink is the throughline of how you connect; the rest is secondary.",
-      "shareLine": "Kink is the throughline of how I connect; the rest is secondary."
+      "title": "The Kinkster",
+      "description": "You love delving into the depths of sensation and experience.",
+      "shareLine": "I love delving into the depths of sensation and experience."
     },
     "poly_leaning_swinger": {
-      "title": "The Open Networker",
-      "description": "Poly at your core, comfortable in the wider swinger world too.",
-      "shareLine": "Poly at my core, comfortable in the wider swinger world too."
+      "title": "The Demi Player",
+      "description": "You have your core partner(s), but you aren't above a good time.",
+      "shareLine": "I have my core partner(s), but I'm not above a good time."
     },
     "poly_leaning_kinky": {
       "title": "The Intimate Connector",
-      "description": "Poly at your core, with kink as a favorite way to go deep.",
-      "shareLine": "Poly at my core, with kink as a favorite way to go deep."
+      "description": "You explore the depths of play with your favorite partners.",
+      "shareLine": "I explore the depths of play with my favorite partners."
     },
     "swinger_leaning_poly": {
       "title": "The Party Romantic",
-      "description": "Swinger-first, but you catch feelings and keep a few close.",
-      "shareLine": "Swinger-first, but I catch feelings and keep a few close."
+      "description": "You like to attend parties with your partner, or perhaps find one there.",
+      "shareLine": "I like to attend parties with my partner, or perhaps find one there."
     },
     "swinger_leaning_kinky": {
       "title": "The Social Thrill-Seeker",
-      "description": "Swinger-first, with a taste for kink in the mix.",
-      "shareLine": "Swinger-first, with a taste for kink in the mix."
+      "description": "In the right setting or mood, you think going deeper is exciting.",
+      "shareLine": "In the right setting or mood, I think going deeper is exciting."
     },
     "kinky_leaning_poly": {
       "title": "The Deep Explorer",
-      "description": "Kink-forward, with a real pull toward intimate, multi-partner bonds.",
-      "shareLine": "Kink-forward, with a real pull toward intimate, multi-partner bonds."
+      "description": "You want whips and chains and a person you love and trust.",
+      "shareLine": "I want whips and chains and a person I love and trust."
     },
     "kinky_leaning_swinger": {
       "title": "The Playful Provocateur",
-      "description": "Kink-forward, and you like bringing it into a social, swinger scene.",
-      "shareLine": "Kink-forward, and I like bringing it into a social, swinger scene."
+      "description": "You show up to parties with, or for, the ropes and whips.",
+      "shareLine": "I show up to parties with, or for, the ropes and whips."
     },
     "edge_kinky_poly": {
       "title": "The Bonded Switch",
-      "description": "Exactly half kink, half poly — and swinging isn't your thing.",
-      "shareLine": "Exactly half kink, half poly — and swinging isn't my thing."
+      "description": "You play with your people, your way.",
+      "shareLine": "I play with my people, my way."
     },
     "edge_poly_swinger": {
       "title": "The Open Romantic",
-      "description": "A perfect balance of poly and swinging, with kink sitting this one out.",
-      "shareLine": "A perfect balance of poly and swinging, with kink sitting this one out."
+      "description": "You stand between worlds, close with those you're close to and playing with the rest.",
+      "shareLine": "I stand between worlds, close with those I'm close to and playing with the rest."
     },
     "edge_kinky_swinger": {
       "title": "The Scene Regular",
-      "description": "Equal footing on kink and swinging, with poly not on your radar.",
-      "shareLine": "Equal footing on kink and swinging, with poly not on my radar."
+      "description": "You just want to have a no-strings-attached good time.",
+      "shareLine": "I just want to have a no-strings-attached good time."
     }
   }
 }
