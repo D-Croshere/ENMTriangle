@@ -509,16 +509,25 @@ function shareUrl({ totals }) {
   return u.toString();
 }
 
-function shareText() {
+function shareData() {
   const { zone } = plotted;
-  return `I'm "${zone.title}" on The ENM Triangle\n${zone.shareLine}\n${shareUrl(plotted)}`;
+  return {
+    title: "The ENM Triangle",
+    text: `I'm "${zone.title}" on The ENM Triangle\n${zone.shareLine}`,
+    url: shareUrl(plotted),
+  };
 }
 
-async function copyShareLink() {
-  const text = shareText();
+// Plain-text form for the clipboard fallback (the share sheet takes fields).
+function shareText() {
+  const d = shareData();
+  return `${d.text}\n${d.url}`;
+}
+
+async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
-    els.shareStatus.textContent = "Copied to clipboard.";
+    return true;
   } catch {
     // Fallback for browsers/contexts without the async clipboard API.
     const ta = document.createElement("textarea");
@@ -529,10 +538,29 @@ async function copyShareLink() {
     ta.select();
     const ok = document.execCommand("copy");
     ta.remove();
-    els.shareStatus.textContent = ok
-      ? "Copied to clipboard."
-      : "Couldn't copy — here's the link: " + shareUrl(plotted);
+    return ok;
   }
+}
+
+async function handleShare() {
+  const data = shareData();
+
+  // Use the OS share sheet where the browser offers one.
+  if (navigator.share && (!navigator.canShare || navigator.canShare(data))) {
+    try {
+      await navigator.share(data);
+      els.shareStatus.textContent = "";
+      return;
+    } catch (err) {
+      if (err && err.name === "AbortError") return; // user dismissed the sheet
+      // otherwise fall through to copying
+    }
+  }
+
+  const ok = await copyToClipboard(shareText());
+  els.shareStatus.textContent = ok
+    ? "Link copied to clipboard."
+    : "Couldn't copy — here's the link: " + data.url;
 }
 
 // If the page is opened with ?poly=&swinger=&kinky= (raw axis totals), jump
@@ -554,7 +582,8 @@ function loadFromUrl() {
  * Wiring
  * ------------------------------------------------------------------ */
 
-els.share.addEventListener("click", copyShareLink);
+els.share.addEventListener("click", handleShare);
+if (navigator.share) els.share.textContent = "Share";
 
 els.startOver.addEventListener("click", () => {
   history.replaceState(null, "", location.pathname); // drop any ?poly=... params
