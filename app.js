@@ -39,10 +39,11 @@ const SHARE_BASE = "https://enmtriangle.netlify.app/";
 
 // `label` is the 1-2 word slider label; `trait` completes the shared
 // "How much do you consider yourself ___?" prompt for screen readers.
+// Fixed order: Kink, then Poly, then Swinger.
 const QUESTIONS = [
+  { key: "kinky",   label: "a kinkster",  trait: "a kinkster" },
   { key: "poly",    label: "polyamorous", trait: "polyamorous" },
   { key: "swinger", label: "a swinger",   trait: "a swinger" },
-  { key: "kinky",   label: "a kinkster",  trait: "a kinkster" },
 ];
 
 // Current slider values, remembered across "Start Over". Default 0.
@@ -87,18 +88,9 @@ const els = {
 // The values behind whatever is currently plotted on screen 2.
 let plotted = null;
 
-function shuffle(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 function renderQuestions() {
   els.questions.innerHTML = "";
-  for (const q of shuffle(QUESTIONS)) {
+  for (const q of QUESTIONS) {
     const wrap = document.createElement("div");
     wrap.className = "question";
 
@@ -297,7 +289,7 @@ els.startOver.addEventListener("click", () => {
   history.replaceState(null, "", location.pathname); // drop any ?poly=... params
   els.screenR.hidden = true;
   els.screenQ.hidden = false;
-  renderQuestions(); // reshuffles order, keeps the values already entered
+  renderQuestions(); // keeps the values already entered
   els.announce.textContent = "";
 });
 
