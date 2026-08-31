@@ -159,9 +159,6 @@ body {
 
 .likert-option input:checked::before {
   background: #dc2626; /* red center, checked */
-}
-
-.likert-option input:checked::before {
   transform: scale(1);
 }
 
@@ -205,6 +202,50 @@ body {
   color: var(--muted);
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
+}
+
+/* ---- Computing screen ---- */
+.computing-text {
+  font-weight: 600;
+  text-align: center;
+  margin: 1.5rem 0 1.25rem;
+}
+
+.computing-bar {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  /* Gradient is anchored to the full bar; the mask shrinks to reveal it,
+     so the colours stay put rather than compressing as the bar fills. */
+  background: linear-gradient(
+    to right,
+    rgb(37, 99, 235),
+    rgb(220, 38, 38),
+    rgb(22, 163, 74)
+  );
+}
+
+.computing-bar__mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: var(--track);
+}
+
+/* ---- Results: retake prompt ---- */
+.divider {
+  border: 0;
+  border-top: 1px solid var(--track);
+  margin: 1.5rem 0 1.25rem;
+}
+
+.retake-prompt {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
 /* ---- Buttons ---- */

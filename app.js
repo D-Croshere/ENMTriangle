@@ -97,7 +97,9 @@ function zoneCopy(key) {
 
 const els = {
   screenQ:      document.getElementById("screen-questions"),
+  screenC:      document.getElementById("screen-computing"),
   screenR:      document.getElementById("screen-results"),
+  computingMask: document.getElementById("computing-mask"),
   resumePrompt: document.getElementById("resume-prompt"),
   resumeSub:    document.getElementById("resume-sub"),
   resumeYes:    document.getElementById("resume-yes"),
@@ -228,12 +230,14 @@ function renderQuestion() {
   });
 
   els.back.disabled = quiz.index === 0;
+  els.next.disabled = false;
   els.next.textContent = quiz.index === total - 1 ? "See My Results" : "Next";
 }
 
 function showQuiz() {
   els.resumePrompt.hidden = true;
   els.form.hidden = false;
+  els.screenC.hidden = true;
   els.screenR.hidden = true;
   els.screenQ.hidden = false;
   renderQuestion();
@@ -283,10 +287,41 @@ els.back.addEventListener("click", () => {
   renderQuestion();
 });
 
+// Length of the non-interactive "computing" pause between the last question
+// and the results. A deliberate beat for feel — the math itself is instant.
+const COMPUTING_MS = 600;
+
 function finishQuiz() {
+  // Guard against a stray second click/Enter landing before the screen swaps.
+  els.next.disabled = true;
+  els.back.disabled = true;
+
   const totals = scoreQuiz(QUESTION_LIST, quiz.responses);
   clearProgress();
-  showResults(totals);
+
+  showComputing();
+  animateComputingBar(COMPUTING_MS);
+  setTimeout(() => showResults(totals), COMPUTING_MS);
+}
+
+function showComputing() {
+  els.screenQ.hidden = true;
+  els.screenR.hidden = true;
+  els.screenC.hidden = false;
+}
+
+// Fill 0% -> 100% over `duration` ms by shrinking the mask that covers the
+// fixed gradient bar.
+function animateComputingBar(duration) {
+  const start = performance.now();
+  els.computingMask.style.width = "100%";
+
+  function frame(now) {
+    const p = Math.min(1, (now - start) / duration);
+    els.computingMask.style.width = `${(1 - p) * 100}%`;
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 }
 
 /* ------------------------------------------------------------------ *
@@ -444,6 +479,7 @@ function showResults(totals) {
   els.shareStatus.textContent = "";
 
   els.screenQ.hidden = true;
+  els.screenC.hidden = true;
   els.screenR.hidden = false;
 }
 
