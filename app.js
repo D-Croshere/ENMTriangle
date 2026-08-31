@@ -511,7 +511,7 @@ function shareUrl({ totals }) {
 
 function shareText() {
   const { zone } = plotted;
-  return `I'm "${zone.title}" on The ENM Triangle — ${zone.shareLine}\n${shareUrl(plotted)}`;
+  return `I'm "${zone.title}" on The ENM Triangle\n${zone.shareLine}\n${shareUrl(plotted)}`;
 }
 
 async function copyShareLink() {
