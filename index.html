@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The ENM Triangle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+    <header class="brand">
+      <h1>The ENM Triangle</h1>
+    </header>
+
+    <!-- Screen 1: Questions -->
+    <section id="screen-questions" aria-label="Rate yourself">
+      <form id="quiz-form">
+        <p class="prompt" id="prompt-text">How much do you consider yourself&hellip;</p>
+        <div id="questions"><!-- sliders injected by app.js --></div>
+        <button type="submit" class="btn btn-primary">See My Results</button>
+      </form>
+
+      <p class="sr-only" aria-live="polite" id="slider-announce"></p>
+    </section>
+
+    <!-- Screen 2: Triangle Chart -->
+    <section id="screen-results" hidden aria-label="Your spot on the triangle">
+      <div class="chart-wrap">
+        <canvas id="triangle" width="300" height="280"
+                role="img" aria-label="Triangle chart with your result plotted as a dot"></canvas>
+        <span class="vtx vtx-kinky">Kinky</span>
+        <span class="vtx vtx-poly">Poly</span>
+        <span class="vtx vtx-swinger">Swinger</span>
+      </div>
+
+      <div class="result">
+        <p class="zone-title" id="zone-title"></p>
+        <p class="zone-desc" id="zone-desc"></p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="share">Copy Share Link</button>
+        <button type="button" class="btn btn-secondary" id="start-over">Start Over</button>
+      </div>
+      <p class="share-status" id="share-status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
