@@ -4,9 +4,12 @@
  * Config
  * ------------------------------------------------------------------ */
 
-// Logical drawing space (matches the <canvas> width/height attributes).
+// Logical drawing space. The canvas backing store is SS times this on each
+// axis (rendered big, displayed small) so the gradient stays sharp on
+// hi-dpi screens and the triangle's edges don't stair-step.
 const VIEW_W = 300;
 const VIEW_H = 280;
+const SS = 3;
 
 // Fixed equilateral-ish vertices in logical space.
 const KINKY   = { x: 150, y: 22 };
@@ -26,9 +29,11 @@ const COLOR_SWINGER = [22, 163, 74];   // green
 const CENTER_RADIUS = 35; // px, distance from centroid for the "adventurer" zone
 const VERTEX_RADIUS = 66; // px, distance from a vertex for a "pure" zone
 
-// Edge-midpoint zones: one normalized weight near zero, the other two close
-// to each other. Tolerance is a fraction of the 0-1 weight range.
-const EDGE_TOLERANCE = 0.05;
+// Edge-midpoint zones ("The Bonded Switch" etc.): the odd-one-out axis must
+// be near zero and the other two roughly balanced. Both are fractions of the
+// 0-1 normalized-weight range — e.g. a 45/45/10 or 50/40/10 split still counts.
+const EDGE_ZERO_MAX = 0.10;    // how close the third axis must be to 0
+const EDGE_BALANCE_MAX = 0.12; // how close the other two must be to each other
 
 // Below this per-axis total (after clamping negatives to zero) on all three
 // axes, no dot is plotted — the "monogamous" result is shown instead.
@@ -389,20 +394,30 @@ function pointToBarycentric(px, py, A, B, C) {
   return { wA, wB, wC };
 }
 
-function drawGradientTriangle(ctx, A, B, C, colorA, colorB, colorC) {
-  const minX = Math.floor(Math.min(A.x, B.x, C.x));
-  const maxX = Math.ceil(Math.max(A.x, B.x, C.x));
-  const minY = Math.floor(Math.min(A.y, B.y, C.y));
-  const maxY = Math.ceil(Math.max(A.y, B.y, C.y));
+// Renders the gradient at `scale`x the logical resolution straight into the
+// canvas backing store. Vertices are given in logical coordinates.
+// putImageData ignores the context transform, so everything here is in
+// device pixels.
+function drawGradientTriangle(ctx, A, B, C, colorA, colorB, colorC, scale = 1) {
+  const ax = A.x * scale, ay = A.y * scale;
+  const bx = B.x * scale, by = B.y * scale;
+  const cx = C.x * scale, cy = C.y * scale;
+
+  const minX = Math.floor(Math.min(ax, bx, cx));
+  const maxX = Math.ceil(Math.max(ax, bx, cx));
+  const minY = Math.floor(Math.min(ay, by, cy));
+  const maxY = Math.ceil(Math.max(ay, by, cy));
 
   const w = maxX - minX;
   const h = maxY - minY;
   const imageData = ctx.createImageData(w, h);
   const data = imageData.data;
 
+  const As = { x: ax, y: ay }, Bs = { x: bx, y: by }, Cs = { x: cx, y: cy };
+
   for (let y = minY; y < maxY; y++) {
     for (let x = minX; x < maxX; x++) {
-      const { wA, wB, wC } = pointToBarycentric(x + 0.5, y + 0.5, A, B, C);
+      const { wA, wB, wC } = pointToBarycentric(x + 0.5, y + 0.5, As, Bs, Cs);
       const i = ((y - minY) * w + (x - minX)) * 4;
       if (wA >= 0 && wB >= 0 && wC >= 0) {
         data[i]     = wA * colorA[0] + wB * colorB[0] + wC * colorC[0];
@@ -431,13 +446,13 @@ function getZone(x, y, wPoly, wSwinger, wKinky) {
   // Edge-midpoint zones: one axis near zero, the other two close to each
   // other. Tolerance band on the normalized weights (was an exact tie on
   // raw slider values, unreachable once scores come from 30+ Likert items).
-  if (wSwinger <= EDGE_TOLERANCE && Math.abs(wKinky - wPoly) <= EDGE_TOLERANCE) {
+  if (wSwinger <= EDGE_ZERO_MAX && Math.abs(wKinky - wPoly) <= EDGE_BALANCE_MAX) {
     return "edge_kinky_poly";
   }
-  if (wKinky <= EDGE_TOLERANCE && Math.abs(wPoly - wSwinger) <= EDGE_TOLERANCE) {
+  if (wKinky <= EDGE_ZERO_MAX && Math.abs(wPoly - wSwinger) <= EDGE_BALANCE_MAX) {
     return "edge_poly_swinger";
   }
-  if (wPoly <= EDGE_TOLERANCE && Math.abs(wKinky - wSwinger) <= EDGE_TOLERANCE) {
+  if (wPoly <= EDGE_ZERO_MAX && Math.abs(wKinky - wSwinger) <= EDGE_BALANCE_MAX) {
     return "edge_kinky_swinger";
   }
 
@@ -457,8 +472,11 @@ function getZone(x, y, wPoly, wSwinger, wKinky) {
 
 function paintGradient() {
   const ctx = els.canvas.getContext("2d");
-  ctx.clearRect(0, 0, VIEW_W, VIEW_H);
-  drawGradientTriangle(ctx, KINKY, POLY, SWINGER, COLOR_KINKY, COLOR_POLY, COLOR_SWINGER);
+  // Sizing the backing store resets the transform and clears the canvas.
+  els.canvas.width = VIEW_W * SS;
+  els.canvas.height = VIEW_H * SS;
+  ctx.scale(SS, SS); // so the dot can be drawn in logical coordinates
+  drawGradientTriangle(ctx, KINKY, POLY, SWINGER, COLOR_KINKY, COLOR_POLY, COLOR_SWINGER, SS);
 }
 
 function showResults(totals) {
