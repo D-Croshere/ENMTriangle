@@ -536,27 +536,23 @@ function shareData() {
   };
 }
 
-// Plain-text form for the clipboard fallback (the share sheet takes fields).
+// Plain-text form for the clipboard path (the share sheet takes fields).
 function shareText() {
   const d = shareData();
   return `${d.text}\n${d.url}`;
 }
 
 async function copyToClipboard(text) {
+  // Only the standard async Clipboard API — no execCommand/hidden-textarea
+  // trick. That pattern is the tell-tale of clipboard-hijacking ("ClickFix")
+  // pages and gets this button flagged by content blockers. If the API
+  // isn't there (insecure context, ancient browser), handleShare just
+  // surfaces the link for the user to copy by hand.
   try {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    // Fallback for browsers/contexts without the async clipboard API.
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    ta.style.position = "fixed";
-    ta.style.opacity = "0";
-    document.body.appendChild(ta);
-    ta.select();
-    const ok = document.execCommand("copy");
-    ta.remove();
-    return ok;
+    return false;
   }
 }
 
