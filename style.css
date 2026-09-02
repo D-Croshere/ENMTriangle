@@ -392,6 +392,34 @@ body {
   text-decoration: underline;
 }
 
+/* ---- FAQ ---- */
+.faq-item + .faq-item {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--track);
+}
+
+.faq-q {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.faq-a {
+  color: var(--muted);
+}
+
+.faq-a p {
+  margin-bottom: 0.75rem;
+}
+.faq-a p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-a a {
+  color: var(--text);
+}
+
 /* ---- Feedback form ---- */
 .field {
   display: block;

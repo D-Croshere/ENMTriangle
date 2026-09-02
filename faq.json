@@ -1,0 +1,20 @@
+{
+  "_note": "FAQ for The ENM Triangle. Each item has a `question` and an `answer` (an array of paragraphs). Inside an answer, [label](url) becomes a link; everything else is shown as plain text. Add, remove, or reorder items freely.",
+  "faq": [
+    {
+      "question": "I'm (x), not ENM. How should I handle this?",
+      "answer": [
+        "You might be looking for [pure kinky](/?poly=0&swinger=0&kinky=10) or [monogamous](/?poly=0&swinger=0&kinky=0) results.",
+        "If those are too associated with ENM, the ENM Triangle may not be for you."
+      ]
+    },
+    {
+      "question": "Is the ENM Triangle scientific?",
+      "answer": ["No."]
+    },
+    {
+      "question": "Why does this exist?",
+      "answer": ["I thought it would be fun."]
+    }
+  ]
+}
