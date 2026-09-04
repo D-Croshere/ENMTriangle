@@ -13,6 +13,16 @@
       "answer": ["No."]
     },
     {
+      "question": "Is my result accurate?",
+      "answer": ["Only if it helps you understand yourself."]
+    },
+    {
+      "question": "Why is my result so different from my partner?",
+      "answer": [
+        "You can always go through the test together and talk about where you differ or agree. It might bring up some fun or interesting conversations. I urge everyone not to treat the Triangle itself as deterministic of anything important."
+      ]
+    },
+    {
       "question": "How many different results are there?",
       "answer": ["Fourteen."]
     },
