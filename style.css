@@ -120,8 +120,14 @@ body {
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.likert-option:hover {
-  border-color: var(--accent);
+/* The accent color means "selected" — hover is deliberately quieter, and only
+   applies where a pointer can genuinely hover. Otherwise the option under a
+   resting pointer (or a touch screen's sticky :hover) on the *next* question
+   looks like a selection carried over from the last one. */
+@media (hover: hover) and (pointer: fine) {
+  .likert-option:hover {
+    border-color: #4b5363;
+  }
 }
 
 .likert-option:has(input:checked) {
