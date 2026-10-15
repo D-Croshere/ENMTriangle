@@ -203,6 +203,19 @@ function answeredCount() {
   return quiz.order.filter((id) => quiz.responses[id] != null).length;
 }
 
+// Make the radios — and the .is-selected styling — mirror the answer stored
+// in the model (undefined = nothing selected). Styling hangs off this class,
+// not :checked, so what's painted can never disagree with what will actually
+// be submitted ("Please choose an answer" is driven by the same model).
+function syncSelection(value) {
+  els.likert.querySelectorAll(".likert-option").forEach((label) => {
+    const input = label.querySelector("input");
+    const selected = value != null && Number(input.value) === value;
+    input.checked = selected;
+    label.classList.toggle("is-selected", selected);
+  });
+}
+
 function renderQuestion() {
   const q = currentQuestion();
   const total = quiz.order.length;
@@ -215,24 +228,31 @@ function renderQuestion() {
 
   els.likert.innerHTML = "";
   for (const opt of LIKERT) {
-    const id = `likert-${opt.value}`;
     const label = document.createElement("label");
     label.className = "likert-option";
-    label.innerHTML = `
-      <input type="radio" name="likert" value="${opt.value}" id="${id}"
-             ${current === opt.value ? "checked" : ""}>
-      <span>${opt.label}</span>
-    `;
-    els.likert.appendChild(label);
-  }
 
-  els.likert.querySelectorAll("input").forEach((input) => {
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = "likert";
+    input.value = String(opt.value);
+    input.id = `likert-${opt.value}`;
+    // Keep the browser from "restoring" a previous option onto these
+    // freshly-built controls; the model below is the only source of truth.
+    input.autocomplete = "off";
     input.addEventListener("change", () => {
       quiz.responses[q.id] = Number(input.value);
       els.validation.textContent = "";
       saveProgress();
+      syncSelection(quiz.responses[q.id]);
     });
-  });
+
+    const text = document.createElement("span");
+    text.textContent = opt.label;
+
+    label.append(input, text);
+    els.likert.appendChild(label);
+  }
+  syncSelection(current);
 
   els.back.disabled = quiz.index === 0;
   els.next.disabled = false;
@@ -605,6 +625,14 @@ els.startOver.addEventListener("click", () => {
   startFresh();
   showQuiz();
   els.announce.textContent = "";
+});
+
+// A page restored from the back/forward cache can come back with stale form
+// state; re-assert the model's selection.
+window.addEventListener("pageshow", () => {
+  if (!els.form.hidden && quiz.order.length) {
+    syncSelection(quiz.responses[currentQuestion().id]);
+  }
 });
 
 (async function init() {
